@@ -6,11 +6,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputLayout;
+
+import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
 
         Button btn1 = (Button) findViewById(R.id.button2);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        EditText input1 = (EditText) findViewById(R.id.input1   );
+        TextView text1 = (TextView) findViewById(R.id.text1);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
@@ -38,6 +48,23 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
+            }
+        });
+
+        input1.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                text1.setText(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
 
