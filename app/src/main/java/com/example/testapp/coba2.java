@@ -1,10 +1,12 @@
 package com.example.testapp;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.utils.widget.ImageFilterButton;
@@ -25,6 +27,18 @@ public class coba2 extends AppCompatActivity {
         Button keluar_app = (Button) findViewById(R.id.keluar_app);
         ImageFilterButton iconButton = (ImageFilterButton) findViewById(R.id.iconButton);
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle("konfirmasi").setMessage("Keluar App ?").setNegativeButton("Kembali", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        }).setPositiveButton("Keluar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                 finishAffinity();
+            }
+        });
+
         iconButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -35,7 +49,9 @@ public class coba2 extends AppCompatActivity {
         keluar_app.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finishAffinity();
+                AlertDialog al = builder.create();
+
+                al.show();
             }
         });
 

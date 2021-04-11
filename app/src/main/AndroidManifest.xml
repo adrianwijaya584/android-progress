@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.testapp">
 
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -11,11 +11,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TestApp">
+        <activity android:name=".constraint_layout"></activity>
+        <activity android:name=".relative_layout" />
+        <activity android:name=".linear_layout" />
+        <activity android:name=".images" />
         <activity
             android:name=".coba2"
             android:label="@string/title_activity_coba2"
-            android:theme="@style/Theme.TestApp.NoActionBar"></activity>
-
+            android:theme="@style/Theme.TestApp.NoActionBar" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

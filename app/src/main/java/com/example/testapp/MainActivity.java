@@ -2,9 +2,15 @@ package com.example.testapp;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -31,6 +37,11 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         EditText input1 = (EditText) findViewById(R.id.input1   );
         TextView text1 = (TextView) findViewById(R.id.text1);
+        Button btn_notification = (Button) findViewById(R.id.btn_notification);
+
+        Button linears = (Button) findViewById(R.id.linears);
+        Button relatives = (Button) findViewById(R.id.relatives);
+        Button constraint = (Button) findViewById(R.id.constraint);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
@@ -76,6 +87,39 @@ public class MainActivity extends AppCompatActivity {
                 Intent i = new Intent(getApplicationContext(),coba2.class);
 
                 startActivity(i);
+            }
+        });
+
+        btn_notification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String channel = "ababab";
+
+                startActivity(new Intent(getApplicationContext(),images.class));
+
+            }
+        });
+
+        linears.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,linear_layout.class);
+
+                startActivity(intent);
+            }
+        });
+
+        relatives.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),relative_layout.class));
+            }
+        });
+
+        constraint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),constraint_layout.class));
             }
         });
 
