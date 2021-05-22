@@ -15,7 +15,7 @@ import android.widget.TextView;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends AppCompatActivity {
+public class 	MainActivity extends AppCompatActivity {
 	MediaPlayer mediaPlayer;
 	private Boolean isPlaying = false;
 	private ImageButton actionButton;
@@ -43,6 +43,11 @@ protected void onCreate(Bundle savedInstanceState) {
 	finalTime = mediaPlayer.getDuration();
 	seekBar.setMax((int)finalTime);
 	
+	time_end.setText(String.format("%s:%s",
+		timeFormat(TimeUnit.MILLISECONDS.toMinutes((long) finalTime)),
+		timeFormat(TimeUnit.MILLISECONDS.toSeconds((long) finalTime) -
+			TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) finalTime)))
+	));
 	
 	
 	actionButton.setOnClickListener(new View.OnClickListener() {
@@ -55,17 +60,13 @@ protected void onCreate(Bundle savedInstanceState) {
 				
 				startTime = mediaPlayer.getCurrentPosition();
 				
-				time_end.setText(String.format("%s:%s",
-					timeFormat(TimeUnit.MILLISECONDS.toMinutes((long) finalTime)),
-					timeFormat(TimeUnit.MILLISECONDS.toSeconds((long) finalTime) -
-						TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) finalTime)))
-				));
-				
-				setStartTime(startTime);
-				
 				isRunning=true;
 				
-				if(!isScrolling) seekBar.setProgress((int)startTime);
+				if(!isScrolling){
+					setStartTime(startTime);
+					seekBar.setProgress((int)startTime);
+				}
+				
 				handler.postDelayed(updateSongTime, 100);
 			}
 			else{
@@ -80,6 +81,9 @@ protected void onCreate(Bundle savedInstanceState) {
 	seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 		@Override
 		public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+			if(fromUser){
+				setStartTime(seekBar.getProgress());
+			}
 		}
 		
 		@Override
@@ -90,15 +94,26 @@ protected void onCreate(Bundle savedInstanceState) {
 		@Override
 		public void onStopTrackingTouch(SeekBar seekBar) {
 			isScrolling=false;
-			startTime = mediaPlayer.getCurrentPosition();
 			
-			setStartTime(startTime);
+			setStartTime(seekBar.getProgress());
 			mediaPlayer.seekTo(seekBar.getProgress());
 			handler.postDelayed(updateSongTime, 100);
 		}
+	}); // seekBar Listener
+	
+	mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+		@Override
+		public void onCompletion(MediaPlayer mp) {
+			Log.d("media","is Finished");
+			mediaPlayer.seekTo(0);
+			isPlaying=false;
+			time_start.setText("00:00");
+			seekBar.setProgress(0);
+			actionButton.setImageResource(android.R.drawable.ic_media_play);
+		}
 	});
 	
-	}
+	} // onCreate
 
 	private String timeFormat(long time){
 		if(time<10){
@@ -121,9 +136,11 @@ protected void onCreate(Bundle savedInstanceState) {
 			if(isRunning){
 				startTime = mediaPlayer.getCurrentPosition();
 				
-				setStartTime(startTime);
+				if(!isScrolling){
+					setStartTime(startTime);
+					seekBar.setProgress((int)mediaPlayer.getCurrentPosition());
+				}
 				
-				if(!isScrolling) seekBar.setProgress((int)startTime);
 				handler.postDelayed(this, 100);
 			}
 		}
