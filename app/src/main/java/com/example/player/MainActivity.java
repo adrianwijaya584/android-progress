@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
 	private SeekBar seekBar;
 	private Handler handler = new Handler();
 	volatile Boolean isRunning = false;
+	private Boolean isScrolling = false;
 	
 @Override
 protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +65,7 @@ protected void onCreate(Bundle savedInstanceState) {
 				
 				isRunning=true;
 				
-				seekBar.setProgress((int)startTime);
+				if(!isScrolling) seekBar.setProgress((int)startTime);
 				handler.postDelayed(updateSongTime, 100);
 			}
 			else{
@@ -83,11 +84,12 @@ protected void onCreate(Bundle savedInstanceState) {
 		
 		@Override
 		public void onStartTrackingTouch(SeekBar seekBar) {
-		
+			isScrolling=true;
 		}
 		
 		@Override
 		public void onStopTrackingTouch(SeekBar seekBar) {
+			isScrolling=false;
 			startTime = mediaPlayer.getCurrentPosition();
 			
 			setStartTime(startTime);
@@ -121,7 +123,7 @@ protected void onCreate(Bundle savedInstanceState) {
 				
 				setStartTime(startTime);
 				
-				seekBar.setProgress((int)startTime);
+				if(!isScrolling) seekBar.setProgress((int)startTime);
 				handler.postDelayed(this, 100);
 			}
 		}
